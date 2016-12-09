@@ -186,6 +186,34 @@ public class MySQLAccess {
 		closeDatabaseConnection();
 		return loty;
 	}
+
+	public Identyfikator getIdentyfikatorById(int idIdentyfikatora) {
+		openDatabaseConnection();
+		Identyfikator i = null;
+		QueryBuilder<Identyfikator, String> q = idDao.queryBuilder();
+		try {
+			q.where().eq("id_identyfikatora", idIdentyfikatora);
+			i = idDao.queryForFirst(q.prepare());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		closeDatabaseConnection();
+		return i;
+	}
+
+	public Identyfikator getIdentyfikatorByValue(String value) {
+		openDatabaseConnection();
+		Identyfikator i = null;
+		QueryBuilder<Identyfikator, String> q = idDao.queryBuilder();
+		try {
+			q.where().eq("numer", value);
+			i = idDao.queryForFirst(q.prepare());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		closeDatabaseConnection();
+		return i;
+	}
 	
 	public List<Klient> getKlientListFromDatabase() {
 		openDatabaseConnection();
@@ -261,12 +289,25 @@ public class MySQLAccess {
     }
   }
 
+	public Identyfikator dodajIdentyfikator(Identyfikator identyfikator) {
+		if(getIdentyfikatorById(identyfikator.getId()) == null) {
+			openDatabaseConnection();
+			try {
+				idDao.create(identyfikator);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		closeDatabaseConnection();
+		return identyfikator;
+	}
+
   public Klient usunKlienta(Klient klient) {
     if(getKlientByIdFromDatabase(klient.getId()) != null) {
       openDatabaseConnection();
       DeleteBuilder<Klient, String> d = userDao.deleteBuilder();
       try {
-        d.where().eq("imie", klient.getImie()).eq("nazwisko", klient.getNazwisko()).eq("id", klient.getId());
+        d.where().eq("id", klient.getId());
         d.delete();
       } catch (SQLException e) {
         e.printStackTrace();
@@ -292,8 +333,6 @@ public class MySQLAccess {
     }
     return klient;
   }
-
-
 	
 	public List<Samolot> getSamolotyListFromDatabase() {
 		openDatabaseConnection();

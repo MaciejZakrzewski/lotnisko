@@ -9,22 +9,31 @@ public class BazaKlientow {
   private static MySQLAccess db = new MySQLAccess();
 
   public static Klient wyszukajKlienta(int id) {
-    Klient klient = db.getKlientByIdFromDatabase(id);
-    return klient;
+    return db.getKlientByIdFromDatabase(id);
   }
 
   public static Klient wyszukajKlienta(Identyfikator identyfikator) {
-    Klient klient = db.getKlientByIdentificatorFromDatabase(identyfikator);
-    return klient;
+    return db.getKlientByIdentificatorFromDatabase(identyfikator);
   }
 
   public static Klient wyszukajKlienta(String imie, String nazwisko) {
-    Klient klient = db.getKlientByNameAndSurnameFromDatabase(imie, nazwisko);
-    return klient;
+    return db.getKlientByNameAndSurnameFromDatabase(imie, nazwisko);
   }
 
   public static Klient zarejestrujKlienta(Klient klient) {
-    db.zarejestrujKlienta(klient);
-    return klient;
+    return db.zarejestrujKlienta(klient);
   }
+
+  public static Klient modyfikujDaneKlienta(Klient klient) {
+    return db.modyfikujKlienta(klient);
+  }
+
+  public static Klient usunKlienta(Klient klient) {
+    return db.usunKlienta(klient);
+  }
+
+  public static Identyfikator dodajIdentyfikator(Identyfikator identyfikator) {
+    return db.dodajIdentyfikator(identyfikator);
+  }
+
 }

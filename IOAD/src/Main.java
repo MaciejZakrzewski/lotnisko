@@ -40,6 +40,15 @@ public class Main {
     System.out.println("WYSZUKIWANIE KLIENTA PO ID");
     System.out.println(klient2.toString());
 
+		Klient newKlient = new Klient();
+    Identyfikator newIdentyfikator = new Identyfikator();
+    newIdentyfikator.setId(6);
+    newIdentyfikator.setTyp("Paszport");
+    newIdentyfikator.setWartosc("AXD476543");
+    newKlient.setImie("Gizmo");
+    newKlient.setNazwisko("Testing");
+    newKlient.setIdentyfikator(newIdentyfikator);
+
 	}
 
 }

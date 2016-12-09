@@ -15,56 +15,70 @@ public class Klient {
 	@DatabaseField(columnName = "nazwisko", canBeNull = false)
 	private String nazwisko;
 
-    @DatabaseField(columnName = "id_identyfikatora", foreign = true, foreignAutoRefresh = true)
+  @DatabaseField(columnName = "id_identyfikatora", foreign = true, foreignAutoRefresh = true)
 	private Identyfikator identyfikator;
-	
-	
+
+  private HistoriaRezerwacji historiaRezerwacji;
+
 	public Klient() {
 		
 	}
-	
-	public Klient(int id, String imie, String nazwisko, Identyfikator identyfikator) {
-		super();
-		this.id = id;
-		this.imie = imie;
-		this.nazwisko = nazwisko;
-		this.identyfikator = identyfikator;
-	}
 
+  public Klient(int id, String imie, String nazwisko, Identyfikator identyfikator) {
+    this.id = id;
+    this.imie = imie;
+    this.nazwisko = nazwisko;
+    this.identyfikator = identyfikator;
+  }
 
+  public int getId() {
+    return id;
+  }
 
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getImie() {
-		return imie;
-	}
-	public void setImie(String imie) {
-		this.imie = imie;
-	}
-	public String getNazwisko() {
-		return nazwisko;
-	}
-	public void setNazwisko(String nazwisko) {
-		this.nazwisko = nazwisko;
-	}
-	public Identyfikator getIdentyfikator() {
-		return identyfikator;
-	}
-	public void setIdentyfikator(Identyfikator identyfikator) {
-		this.identyfikator = identyfikator;
-	}
+  public void setId(int id) {
+    this.id = id;
+  }
 
+  public String getImie() {
+    return imie;
+  }
 
+  public void setImie(String imie) {
+    this.imie = imie;
+  }
 
-	@Override
-	public String toString() {
-		return "Klient [id=" + id + ", imie=" + imie + ", nazwisko=" + nazwisko
-				+ ", identyfikator=" + identyfikator + "]";
-	}
-	
-	
+  public String getNazwisko() {
+    return nazwisko;
+  }
+
+  public void setNazwisko(String nazwisko) {
+    this.nazwisko = nazwisko;
+  }
+
+  public Identyfikator getIdentyfikator() {
+    return identyfikator;
+  }
+
+  public void setIdentyfikator(Identyfikator identyfikator) {
+    this.identyfikator = identyfikator;
+  }
+
+  public HistoriaRezerwacji getHistoriaRezerwacji() {
+    return historiaRezerwacji;
+  }
+
+  public void setHistoriaRezerwacji(HistoriaRezerwacji historiaRezerwacji) {
+    this.historiaRezerwacji = historiaRezerwacji;
+  }
+
+  @Override
+  public String toString() {
+    return "Klient{" +
+        "id=" + id +
+        ", imie='" + imie + '\'' +
+        ", nazwisko='" + nazwisko + '\'' +
+        ", identyfikator=" + identyfikator +
+        ", historiaRezerwacji=" + historiaRezerwacji +
+        '}';
+  }
 }
