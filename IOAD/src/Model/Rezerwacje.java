@@ -14,6 +14,9 @@ public class Rezerwacje {
 	@DatabaseField(columnName = "id_lotu", canBeNull = false)
 	private int idLotu;
 
+	@DatabaseField(columnName = "status", canBeNull = false)
+	private STATUS statusLotu;
+
 	public Rezerwacje(){
 		
 	}
@@ -49,11 +52,17 @@ public class Rezerwacje {
 		this.idLotu = idLotu;
 	}
 
+	public STATUS getStatusLotu() { return statusLotu; }
+
+	public void setStatusLotu(STATUS statusLotu) { this.statusLotu = statusLotu; }
+
 	@Override
 	public String toString() {
-		return "Rezerwacje [idRezerwacji=" + idRezerwacji + ", idKlienta="
-				+ idKlienta + ", idLotu=" + idLotu + "]";
+		return "Rezerwacje{" +
+				"idRezerwacji=" + idRezerwacji +
+				", idKlienta=" + idKlienta +
+				", idLotu=" + idLotu +
+				", statusLotu=" + statusLotu +
+				'}';
 	}
-
-	
 }

@@ -1,6 +1,7 @@
 import java.util.List;
 
 import Controller.MySQLAccess;
+import KlientPack.*;
 import Model.*;
 
 
@@ -33,7 +34,7 @@ public class Main {
     Klient klient = BazaKlientow.wyszukajKlienta(2);
     System.out.println(klient.toString());
 
-    Identyfikator identyfikator = new Identyfikator(1, "Paszport", "AVK41547815");
+    KlientPack.Identyfikator identyfikator = new KlientPack.Identyfikator(1, "Paszport", "AVK41547815");
 
     Klient klient2 = BazaKlientow.wyszukajKlienta(identyfikator);
     System.out.println("WYSZUKIWANIE KLIENTA PO ID");

@@ -21,8 +21,8 @@ import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 
 import Model.BagazPrzylatujacy;
-import Model.Identyfikator;
-import Model.Klient;
+import KlientPack.Identyfikator;
+import KlientPack.Klient;
 import Model.Lot;
 import Model.Rezerwacje;
 import Model.Samolot;
@@ -244,6 +244,56 @@ public class MySQLAccess {
     closeDatabaseConnection();
     return k;
   }
+
+  public Klient zarejestrujKlienta(Klient klient) {
+		if(getKlientByIdFromDatabase(klient.getId()) == null) {
+      openDatabaseConnection();
+      try {
+        userDao.create(klient);
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+      closeDatabaseConnection();
+      return klient;
+    } else {
+      closeDatabaseConnection();
+      return klient;
+    }
+  }
+
+  public Klient usunKlienta(Klient klient) {
+    if(getKlientByIdFromDatabase(klient.getId()) != null) {
+      openDatabaseConnection();
+      DeleteBuilder<Klient, String> d = userDao.deleteBuilder();
+      try {
+        d.where().eq("imie", klient.getImie()).eq("nazwisko", klient.getNazwisko()).eq("id", klient.getId());
+        d.delete();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+      closeDatabaseConnection();
+    }
+    return klient;
+  }
+
+  public Klient modyfikujKlienta(Klient klient) {
+    if(getKlientByIdFromDatabase(klient.getId()) != null) {
+      openDatabaseConnection();
+      UpdateBuilder<Klient, String> u = userDao.updateBuilder();
+      try {
+        u.updateColumnValue("imie", klient.getImie()).where().eq("id", klient.getId());
+        u.updateColumnValue("nazwisko", klient.getNazwisko()).where().eq("id", klient.getId());
+        u.updateColumnValue("id_identyfikatora", klient.getIdentyfikator().getId()).where().eq("id", klient.getId());
+        u.update();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+      closeDatabaseConnection();
+    }
+    return klient;
+  }
+
+
 	
 	public List<Samolot> getSamolotyListFromDatabase() {
 		openDatabaseConnection();

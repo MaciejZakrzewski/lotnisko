@@ -1,4 +1,4 @@
-package Model;
+package KlientPack;
 
 import Controller.MySQLAccess;
 
@@ -20,6 +20,11 @@ public class BazaKlientow {
 
   public static Klient wyszukajKlienta(String imie, String nazwisko) {
     Klient klient = db.getKlientByNameAndSurnameFromDatabase(imie, nazwisko);
+    return klient;
+  }
+
+  public static Klient zarejestrujKlienta(Klient klient) {
+    db.zarejestrujKlienta(klient);
     return klient;
   }
 }
