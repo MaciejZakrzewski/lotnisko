@@ -6,8 +6,8 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "identyfikatory")
 public class Identyfikator {
 
-	@DatabaseField(columnName = "id_identyfikatora", canBeNull = false, id = true)
-	private int id;
+	@DatabaseField(columnName = "id_identyfikatora", generatedId = true)
+	private Integer id;
 	
 	@DatabaseField(columnName = "typ", canBeNull = false)
 	private String typ;
@@ -26,7 +26,7 @@ public class Identyfikator {
 		this.wartosc = wartosc;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 

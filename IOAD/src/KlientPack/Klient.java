@@ -1,6 +1,9 @@
 package KlientPack;
 
+import java.util.List;
+
 import com.j256.ormlite.field.DatabaseField;
+import Model.Rezerwacje;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "klienci")
@@ -18,9 +21,9 @@ public class Klient {
   @DatabaseField(columnName = "id_identyfikatora", foreign = true, foreignAutoRefresh = true)
 	private Identyfikator identyfikator;
 
-  private HistoriaRezerwacji historiaRezerwacji;
+  private List<Rezerwacje> listaRezerwacji;
 
-	public Klient() {
+  public Klient() {
 		
 	}
 
@@ -31,8 +34,8 @@ public class Klient {
     this.identyfikator = identyfikator;
   }
 
-  public int getId() {
-    return id;
+  public Integer getId() {
+    return (Integer)id;
   }
 
   public void setId(int id) {
@@ -62,23 +65,19 @@ public class Klient {
   public void setIdentyfikator(Identyfikator identyfikator) {
     this.identyfikator = identyfikator;
   }
-
-  public HistoriaRezerwacji getHistoriaRezerwacji() {
-    return historiaRezerwacji;
+  
+  public List<Rezerwacje> getListaRezerwacji() {
+    return listaRezerwacji;
   }
 
-  public void setHistoriaRezerwacji(HistoriaRezerwacji historiaRezerwacji) {
-    this.historiaRezerwacji = historiaRezerwacji;
+  public void setListaRezerwacji(List<Rezerwacje> listaRezerwacji) {
+    this.listaRezerwacji = listaRezerwacji;
   }
 
   @Override
   public String toString() {
-    return "Klient{" +
-        "id=" + id +
-        ", imie='" + imie + '\'' +
-        ", nazwisko='" + nazwisko + '\'' +
-        ", identyfikator=" + identyfikator +
-        ", historiaRezerwacji=" + historiaRezerwacji +
-        '}';
+    return "Klient [id=" + id + ", imie=" + imie + ", nazwisko=" + nazwisko + ", identyfikator=" + identyfikator
+        + ", listaRezerwacji=" + listaRezerwacji + "]";
   }
+
 }

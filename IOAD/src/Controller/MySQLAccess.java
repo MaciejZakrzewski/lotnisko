@@ -1,16 +1,10 @@
 package Controller;
 
 import java.sql.SQLException;
+
 import java.util.List;
 
 //import org.jasypt.util.password.StrongPasswordEncryptor;
-
-
-
-
-
-
-
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -186,6 +180,19 @@ public class MySQLAccess {
 		closeDatabaseConnection();
 		return loty;
 	}
+	
+	public Lot getLotById(int idLotu) {
+	  openDatabaseConnection();
+	  Lot l = null;
+	  QueryBuilder<Lot, String> q = tripDao.queryBuilder();
+	  try {
+	    q.where().eq("id", idLotu);
+	    l = tripDao.queryForFirst(q.prepare());
+	  } catch (SQLException e) {
+	    e.printStackTrace();
+	  }
+	  return l;
+	}
 
 	public Identyfikator getIdentyfikatorById(int idIdentyfikatora) {
 		openDatabaseConnection();
@@ -213,6 +220,20 @@ public class MySQLAccess {
 		}
 		closeDatabaseConnection();
 		return i;
+	}
+	
+	public Identyfikator getIdentyfikatorByTypeAndValue(String type, String value) {
+	  openDatabaseConnection();
+	  Identyfikator i = null;
+	  QueryBuilder<Identyfikator, String> q = idDao.queryBuilder();
+	  try {
+	    q.where().eq("typ", type).and().eq("numer", value);
+	    i = idDao.queryForFirst(q.prepare());
+	  } catch(SQLException e) {
+	    e.printStackTrace();
+	  }
+	  closeDatabaseConnection();
+	  return i;
 	}
 	
 	public List<Klient> getKlientListFromDatabase() {
@@ -264,7 +285,7 @@ public class MySQLAccess {
     Klient k = null;
     QueryBuilder<Klient, String> q = userDao.queryBuilder();
     try {
-      q.where().eq("imie", name).eq("nazwisko", surname);
+      q.where().eq("imie", name).and().eq("nazwisko", surname);
       k = userDao.queryForFirst(q.prepare());
     } catch (SQLException e) {
       e.printStackTrace();
@@ -277,16 +298,18 @@ public class MySQLAccess {
 		if(getKlientByIdFromDatabase(klient.getId()) == null) {
       openDatabaseConnection();
       try {
+        if(klient.getIdentyfikator() != null && klient.getIdentyfikator().getId() == null) {
+          idDao.create(klient.getIdentyfikator());
+        }
         userDao.create(klient);
       } catch (SQLException e) {
         e.printStackTrace();
       }
-      closeDatabaseConnection();
-      return klient;
-    } else {
-      closeDatabaseConnection();
-      return klient;
+      finally {
+        closeDatabaseConnection();
+      }
     }
+		return klient;
   }
 
 	public Identyfikator dodajIdentyfikator(Identyfikator identyfikator) {
@@ -306,9 +329,12 @@ public class MySQLAccess {
     if(getKlientByIdFromDatabase(klient.getId()) != null) {
       openDatabaseConnection();
       DeleteBuilder<Klient, String> d = userDao.deleteBuilder();
+      DeleteBuilder<Identyfikator, String> dId = idDao.deleteBuilder();
       try {
         d.where().eq("id", klient.getId());
         d.delete();
+        dId.where().eq("id_identyfikatora", klient.getIdentyfikator().getId());
+        dId.delete();
       } catch (SQLException e) {
         e.printStackTrace();
       }
@@ -321,15 +347,37 @@ public class MySQLAccess {
     if(getKlientByIdFromDatabase(klient.getId()) != null) {
       openDatabaseConnection();
       UpdateBuilder<Klient, String> u = userDao.updateBuilder();
+      UpdateBuilder<Identyfikator, String> uId = idDao.updateBuilder();
       try {
         u.updateColumnValue("imie", klient.getImie()).where().eq("id", klient.getId());
         u.updateColumnValue("nazwisko", klient.getNazwisko()).where().eq("id", klient.getId());
-        u.updateColumnValue("id_identyfikatora", klient.getIdentyfikator().getId()).where().eq("id", klient.getId());
         u.update();
+        uId.updateColumnValue("numer", klient.getIdentyfikator().getWartosc()).where().eq("id_identyfikatora", klient.getIdentyfikator().getId());
+        uId.updateColumnValue("typ", klient.getIdentyfikator().getTyp()).where().eq("id_identyfikatora", klient.getIdentyfikator().getId());
+        uId.update();
+        
       } catch (SQLException e) {
         e.printStackTrace();
       }
       closeDatabaseConnection();
+    }
+    return klient;
+  }
+
+  public Klient pobierzListeRezerwacji(Klient klient) {
+    if(getKlientByIdFromDatabase(klient.getId()) != null) {
+      openDatabaseConnection();
+      List<Rezerwacje> r = null;
+      QueryBuilder<Rezerwacje, String> q = reservationDao.queryBuilder();
+      try {
+        q.where().eq("id_klienta", klient.getId());
+        r = reservationDao.query(q.prepare());
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+      if(r != null) {
+        klient.setListaRezerwacji(r);
+      }
     }
     return klient;
   }

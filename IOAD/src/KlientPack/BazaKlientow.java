@@ -1,12 +1,16 @@
 package KlientPack;
 
-import Controller.MySQLAccess;
+import java.util.List;
 
-/**
- * Created by Maciej on 05.12.2016.
- */
+import Controller.MySQLAccess;
+import Model.Lot;
+
 public class BazaKlientow {
   private static MySQLAccess db = new MySQLAccess();
+  
+  public static List<Klient> pobierzListeKlientow() {
+    return db.getKlientListFromDatabase();
+  }
 
   public static Klient wyszukajKlienta(int id) {
     return db.getKlientByIdFromDatabase(id);
@@ -32,8 +36,29 @@ public class BazaKlientow {
     return db.usunKlienta(klient);
   }
 
+  public static Klient pobierzListeRezerwacji(Klient klient) {
+    return db.pobierzListeRezerwacji(klient);
+  }
+
   public static Identyfikator dodajIdentyfikator(Identyfikator identyfikator) {
     return db.dodajIdentyfikator(identyfikator);
   }
+
+  public static Identyfikator wyszukajIdentyfikator(String value) {
+    return db.getIdentyfikatorByValue(value);
+  }
+
+  public static Identyfikator wyszukajIdentyfikator(int idIdentyfikatora) {
+    return db.getIdentyfikatorById(idIdentyfikatora);
+  }
+  
+  public static Identyfikator wyszukajIdentyfikator(String typ, String value) {
+    return db.getIdentyfikatorByTypeAndValue(typ, value);
+  }
+
+  public static Lot wyszukajLot(int idLotu) {
+    return db.getLotById(idLotu);
+  }
+
 
 }
